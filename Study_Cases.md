@@ -196,7 +196,7 @@ Buatlah program kasir toko yang dapat:
 5. Hitung total akhir
 6. Input uang dan hitung kembalian
 
-### 🎯 Flowchart
+### Flowchart
 
 ```
 [MULAI]
