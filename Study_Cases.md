@@ -26,37 +26,7 @@ Buatlah program kasir untuk warung yang dapat:
 
 ### Flowchart
 
-```
-[MULAI]
-   ↓
-[Input: Berapa barang?]
-   ↓
-[Inisialisasi: total = 0]
-   ↓
-[UNTUK setiap barang]
-   ↓
-[Input: harga barang]
-   ↓
-[total = total + harga]
-   ↓
-[ULANGI sampai semua barang]
-   ↓
-[Tampilkan total belanja]
-   ↓
-[Input: uang dibayar]
-   ↓
-[JIKA uang < total]
-   ↓ Ya
-[Tampilkan "Uang kurang!"]
-   ↓
-[KEMBALI ke input uang]
-   ↓ Tidak
-[kembalian = uang - total]
-   ↓
-[Tampilkan kembalian]
-   ↓
-[SELESAI]
-```
+![Flowchart 1](flowchart-case-1.png)
 
 ### Pseudocode
 
@@ -198,51 +168,7 @@ Buatlah program kasir toko yang dapat:
 
 ### Flowchart
 
-```
-[MULAI]
-   ↓
-[Input: jumlah_item]
-   ↓
-[subtotal = 0]
-   ↓
-[UNTUK setiap item]
-   ↓
-[Input: harga, jumlah]
-   ↓
-[total_item = harga × jumlah]
-   ↓
-[subtotal += total_item]
-   ↓
-[ULANGI sampai semua item]
-   ↓
-[JIKA subtotal >= 100000]
-   ↓ Ya → [diskon = 10%]
-   ↓ Tidak
-[JIKA subtotal >= 50000]
-   ↓ Ya → [diskon = 5%]
-   ↓ Tidak → [diskon = 0%]
-   ↓
-[potongan = subtotal × diskon]
-   ↓
-[setelah_diskon = subtotal - potongan]
-   ↓
-[pajak = setelah_diskon × 10%]
-   ↓
-[total_akhir = setelah_diskon + pajak]
-   ↓
-[Tampilkan rincian]
-   ↓
-[Input: uang dibayar]
-   ↓
-[JIKA uang < total_akhir]
-   ↓ Ya → [ULANGI input uang]
-   ↓ Tidak
-[kembalian = uang - total_akhir]
-   ↓
-[Tampilkan kembalian]
-   ↓
-[SELESAI]
-```
+![Flowchart 2](flowchart-case-2.png)
 
 ### Pseudocode
 
