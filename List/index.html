@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python List Adventure</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .game-container {
+            max-width: 1400px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        .level-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+        }
+        .theory-section {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 5px solid #667eea;
+        }
+        .visual-box {
+            background: #f8f9fa;
+            border: 3px solid #667eea;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .list-item {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 25px;
+            margin: 5px;
+            border-radius: 8px;
+            font-weight: bold;
+            display: inline-block;
+            animation: popIn 0.3s ease;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .list-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .list-item.highlight {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            animation: pulse 0.5s;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        .list-item .index {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            background: gold;
+            color: #333;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        @keyframes popIn {
+            0% { transform: scale(0); }
+            100% { transform: scale(1); }
+        }
+        .list-2d-row {
+            display: flex;
+            margin: 5px;
+            padding: 10px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 8px;
+            border: 2px solid #667eea;
+        }
+        .list-3d-layer {
+            margin: 10px;
+            padding: 15px;
+            background: rgba(118, 75, 162, 0.1);
+            border: 2px dashed #764ba2;
+            border-radius: 10px;
+        }
+        .score-badge {
+            background: gold;
+            color: #333;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 18px;
+            display: inline-block;
+            margin: 5px;
+        }
+        .btn-custom {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: transform 0.2s;
+            margin: 2px;
+        }
+        .btn-custom:hover {
+            transform: scale(1.05);
+            color: white;
+        }
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            font-size: 13px;
+            position: relative;
+        }
+        .code-output {
+            background: #1e1e1e;
+            color: #4ec9b0;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-family: 'Courier New', monospace;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .method-badge {
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+            margin: 3px;
+        }
+        .example-box {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        .access-panel {
+            background: #f8f9fa;
+            border: 2px dashed #667eea;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        .loop-output {
+            background: #e7f3ff;
+            border-left: 4px solid #0066cc;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+        }
+        .empty-state {
+            color: #6c757d;
+            font-style: italic;
+            padding: 20px;
+        }
+        .info-card {
+            background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            color: #333;
+        }
+        .tab-button {
+            background: #e9ecef;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px 10px 0 0;
+            font-weight: bold;
+            cursor: pointer;
+            margin-right: 5px;
+            transition: all 0.3s;
+        }
+        .tab-button.active {
+            background: white;
+            color: #667eea;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .dimension-badge {
+            background: linear-gradient(135deg, #FA8BFF 0%, #2BD2FF 90%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="text-center text-white mb-4">
+            <h1 class="display-4 fw-bold">🚀 Python List Adventure</h1>
+            <p class="lead">Master List 1D, 2D, 3D dengan Teori & Praktik!</p>
+            <div class="mt-3">
+                <span class="score-badge">⭐ Skor: <span id="score">0</span></span>
+                <span class="score-badge">🏆 Level: <span id="level">1</span></span>
+                <span class="score-badge">🔥 Streak: <span id="streak">0</span></span>
+            </div>
+        </div>
+
+        <!-- Level 1: List 1D -->
+        <div id="level1" class="level-card">
+            <div class="text-center mb-4">
+                <span class="dimension-badge">📦 LEVEL 1: LIST 1 DIMENSI</span>
+            </div>
+
+            <div class="mb-3">
+                <button class="tab-button active" onclick="switchTab(1, 'theory')">📚 Teori</button>
+                <button class="tab-button" onclick="switchTab(1, 'practice')">🎯 Praktik</button>
+                <button class="tab-button" onclick="switchTab(1, 'access')">🔍 Akses Data</button>
+                <button class="tab-button" onclick="switchTab(1, 'loop')">🔄 Looping</button>
+            </div>
+
+            <div id="tab1-theory" class="tab-content active">
+                <div class="theory-section">
+                    <h4>🎓 Apa itu List 1D?</h4>
+                    <p class="mb-3">List 1D adalah struktur data linear yang menyimpan elemen-elemen dalam satu baris. Seperti deretan kotak yang berisi data, setiap kotak memiliki nomor index mulai dari 0.</p>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="example-box">
+                                <h6><strong>📝 Deklarasi List:</strong></h6>
+                                <div class="code-block"><code># Membuat list kosong
+buah = []
+
+# List dengan data
+buah = ["Apel", "Jeruk", "Mangga", "Pisang"]
+
+# List dengan tipe data berbeda
+data = [1, "Hello", 3.14, True]</code></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="example-box">
+                                <h6><strong>🔧 Method Utama:</strong></h6>
+                                <span class="method-badge">append()</span> Tambah di akhir<br>
+                                <span class="method-badge">insert()</span> Sisip di posisi<br>
+                                <span class="method-badge">pop()</span> Hapus & return<br>
+                                <span class="method-badge">remove()</span> Hapus by value<br>
+                                <span class="method-badge">clear()</span> Kosongkan list<br>
+                                <span class="method-badge">len()</span> Panjang list
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-card mt-3">
+                        <strong>💡 Fun Fact:</strong> Python menggunakan indexing mulai dari 0. Jadi elemen pertama adalah index 0, bukan 1!
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab1-practice" class="tab-content">
+                <h5>🎮 Zona Praktik: Kelola List Belanjaan</h5>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <input type="text" id="item1d" class="form-control" placeholder="Nama item (contoh: Susu)">
+                    </div>
+                    <div class="col-md-3">
+                        <input type="number" id="index1d" class="form-control" placeholder="Index (opsional)">
+                    </div>
+                    <div class="col-md-3">
+                        <input type="number" id="qty1d" class="form-control" placeholder="Jumlah">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <button class="btn btn-success btn-sm" onclick="append1D()">📥 append()</button>
+                    <button class="btn btn-info btn-sm" onclick="insert1D()">📌 insert()</button>
+                    <button class="btn btn-warning btn-sm" onclick="pop1D()">📤 pop()</button>
+                    <button class="btn btn-danger btn-sm" onclick="remove1D()">🗑️ remove()</button>
+                    <button class="btn btn-custom btn-sm" onclick="shuffle1D()">🔀 Acak</button>
+                    <button class="btn btn-secondary btn-sm" onclick="reset1D()">🔄 Reset</button>
+                </div>
+                <div id="list1d" class="visual-box">
+                    <div class="empty-state">📦 List kosong - Mulai tambahkan item!</div>
+                </div>
+                <div id="output1d" class="code-output" style="display:none;"></div>
+            </div>
+
+            <div id="tab1-access" class="tab-content">
+                <h5>🔍 Mengakses Elemen List</h5>
+                <div class="theory-section">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6><strong>Cara Akses Data:</strong></h6>
+                            <div class="code-block"><code>buah = ["Apel", "Jeruk", "Mangga", "Pisang"]
+
+# Akses by index
+print(buah[0])      # Output: Apel
+print(buah[2])      # Output: Mangga
+
+# Akses dari belakang (negative index)
+print(buah[-1])     # Output: Pisang
+print(buah[-2])     # Output: Mangga
+
+# Slicing
+print(buah[1:3])    # Output: ["Jeruk", "Mangga"]</code></div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-card">
+                                <h6>📊 Visualisasi Index:</h6>
+                                <table class="table table-sm table-bordered bg-white">
+                                    <tr><th>Index</th><td>0</td><td>1</td><td>2</td><td>3</td></tr>
+                                    <tr><th>Value</th><td>Apel</td><td>Jeruk</td><td>Mangga</td><td>Pisang</td></tr>
+                                    <tr><th>Negative</th><td>-4</td><td>-3</td><td>-2</td><td>-1</td></tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="access-panel">
+                    <h6>🎯 Coba Akses List Kamu:</h6>
+                    <div class="row mb-3">
+                        <div class="col-md-8">
+                            <input type="number" id="accessIndex1d" class="form-control" placeholder="Masukkan index (0, 1, 2, ... atau -1, -2, ...)">
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-custom w-100" onclick="accessByIndex1D()">🔍 Get by Index</button>
+                        </div>
+                    </div>
+                    <div id="accessResult1d" class="loop-output" style="display:none;"></div>
+                </div>
+            </div>
+
+            <div id="tab1-loop" class="tab-content">
+                <h5>🔄 Looping pada List</h5>
+                <div class="theory-section">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6><strong>1. For Loop Sederhana:</strong></h6>
+                            <div class="code-block"><code>for item in buah:
+    print(item)</code></div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6><strong>2. Loop dengan Enumerate:</strong></h6>
+                            <div class="code-block"><code>for index, item in enumerate(buah):
+    print(f"{index}: {item}")</code></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="access-panel">
+                    <h6>🎯 Jalankan Loop pada List Kamu:</h6>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <button class="btn btn-custom w-100" onclick="loopSimple1D()">🔄 For Loop</button>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-info w-100" onclick="loopEnumerate1D()">📊 Enumerate</button>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-success w-100" onclick="loopRange1D()">🎯 Range Loop</button>
+                        </div>
+                    </div>
+                    <div id="loopResult1d" class="loop-output" style="display:none;"></div>
+                </div>
+            </div>
+
+            <button class="btn btn-custom mt-4 w-100 btn-lg" onclick="nextLevel(2)">Lanjut ke Level 2: List 2D 🚀</button>
+        </div>
+
+        <!-- Level 2: List 2D -->
+        <div id="level2" class="level-card" style="display:none;">
+            <div class="text-center mb-4">
+                <span class="dimension-badge">🎲 LEVEL 2: LIST 2 DIMENSI</span>
+            </div>
+
+            <div class="mb-3">
+                <button class="tab-button active" onclick="switchTab(2, 'theory')">📚 Teori</button>
+                <button class="tab-button" onclick="switchTab(2, 'practice')">🎯 Praktik</button>
+            </div>
+
+            <div id="tab2-theory" class="tab-content active">
+                <div class="theory-section">
+                    <h4>🎓 Apa itu List 2D?</h4>
+                    <p>List 2D adalah list yang berisi list lain, membentuk struktur seperti tabel dengan baris dan kolom.</p>
+                </div>
+            </div>
+
+            <div id="tab2-practice" class="tab-content">
+                <h5>🎮 Zona Praktik: Tabel Data</h5>
+                <div id="list2d" class="visual-box">
+                    <div class="empty-state">📊 Tabel kosong</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let list1D = ["Apel", "Jeruk", "Mangga", "Pisang"];
+        let list2D = [];
+        let score = 0;
+        let streak = 0;
+
+        function switchTab(level, tab) {
+            const tabs = document.querySelectorAll(`#level${level} .tab-button`);
+            const contents = document.querySelectorAll(`#level${level} .tab-content`);
+            
+            tabs.forEach(t => t.classList.remove('active'));
+            contents.forEach(c => c.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(`tab${level}-${tab}`).classList.add('active');
+        }
+
+        function updateScore(points) {
+            score += points;
+            streak++;
+            document.getElementById('score').textContent = score;
+            document.getElementById('streak').textContent = streak;
+        }
+
+        function render1D() {
+            const container = document.getElementById('list1d');
+            if (list1D.length === 0) {
+                container.innerHTML = '<div class="empty-state">📦 List kosong - Mulai tambahkan item!</div>';
+                return;
+            }
+            
+            container.innerHTML = list1D.map((item, idx) => 
+                `<div class="list-item">
+                    <span class="index">${idx}</span>
+                    ${item}
+                </div>`
+            ).join('');
+        }
+
+        function append1D() {
+            const item = document.getElementById('item1d').value;
+            if (!item) return alert('Masukkan nama item!');
+            
+            list1D.push(item);
+            render1D();
+            updateScore(10);
+            showOutput1D(`list.append("${item}")`, `List sekarang: ${JSON.stringify(list1D)}`);
+            document.getElementById('item1d').value = '';
+        }
+
+        function insert1D() {
+            const item = document.getElementById('item1d').value;
+            const index = parseInt(document.getElementById('index1d').value) || 0;
+            if (!item) return alert('Masukkan nama item!');
+            
+            list1D.splice(index, 0, item);
+            render1D();
+            updateScore(15);
+            showOutput1D(`list.insert(${index}, "${item}")`, `List sekarang: ${JSON.stringify(list1D)}`);
+        }
+
+        function pop1D() {
+            if (list1D.length === 0) return alert('List kosong!');
+            const popped = list1D.pop();
+            render1D();
+            updateScore(10);
+            showOutput1D(`list.pop()`, `Dihapus: "${popped}"\nList sekarang: ${JSON.stringify(list1D)}`);
+        }
+
+        function remove1D() {
+            const item = document.getElementById('item1d').value;
+            if (!item) return alert('Masukkan nama item yang akan dihapus!');
+            
+            const idx = list1D.indexOf(item);
+            if (idx === -1) return alert('Item tidak ditemukan!');
+            
+            list1D.splice(idx, 1);
+            render1D();
+            updateScore(10);
+            showOutput1D(`list.remove("${item}")`, `List sekarang: ${JSON.stringify(list1D)}`);
+        }
+
+        function shuffle1D() {
+            for (let i = list1D.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [list1D[i], list1D[j]] = [list1D[j], list1D[i]];
+            }
+            render1D();
+            updateScore(20);
+            showOutput1D('random.shuffle(list)', `List setelah diacak: ${JSON.stringify(list1D)}`);
+        }
+
+        function reset1D() {
+            list1D = [];
+            render1D();
+            document.getElementById('output1d').style.display = 'none';
+        }
+
+        function showOutput1D(code, output) {
+            const out = document.getElementById('output1d');
+            out.style.display = 'block';
+            out.innerHTML = `<strong>Code:</strong> ${code}\n<strong>Output:</strong>\n${output}`;
+        }
+
+        function accessByIndex1D() {
+            const index = parseInt(document.getElementById('accessIndex1d').value);
+            if (isNaN(index)) return alert('Masukkan index yang valid!');
+            
+            if (list1D.length === 0) {
+                alert('⚠️ List masih kosong! Tambahkan item dulu di tab Praktik.');
+                return;
+            }
+            
+            const result = document.getElementById('accessResult1d');
+            result.style.display = 'block';
+            
+            if (index < -list1D.length || index >= list1D.length) {
+                result.innerHTML = `❌ Index ${index} out of range! List memiliki ${list1D.length} elemen (index valid: 0 sampai ${list1D.length - 1}, atau -${list1D.length} sampai -1)`;
+            } else {
+                const item = list1D[index < 0 ? list1D.length + index : index];
+                result.innerHTML = `✅ list[${index}] = "${item}"\n\n📋 List lengkap: ${JSON.stringify(list1D)}`;
+                updateScore(5);
+            }
+        }
+
+        function loopSimple1D() {
+            const result = document.getElementById('loopResult1d');
+            result.style.display = 'block';
+            result.innerHTML = '<strong>For item in list:</strong>\n' + 
+                list1D.map(item => `  ${item}`).join('\n');
+        }
+
+        function loopEnumerate1D() {
+            const result = document.getElementById('loopResult1d');
+            result.style.display = 'block';
+            result.innerHTML = '<strong>For index, item in enumerate(list):</strong>\n' + 
+                list1D.map((item, idx) => `  ${idx}: ${item}`).join('\n');
+        }
+
+        function loopRange1D() {
+            const result = document.getElementById('loopResult1d');
+            result.style.display = 'block';
+            result.innerHTML = '<strong>For i in range(len(list)):</strong>\n' + 
+                list1D.map((item, idx) => `  Index ${idx}: ${item}`).join('\n');
+        }
+
+        function nextLevel(level) {
+            document.getElementById(`level${level - 1}`).style.display = 'none';
+            document.getElementById(`level${level}`).style.display = 'block';
+            document.getElementById('level').textContent = level;
+        }
+
+        // Initialize
+        render1D();
+    </script>
+</body>
+</html>
